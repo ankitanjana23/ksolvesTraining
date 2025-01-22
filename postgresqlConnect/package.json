@@ -1,0 +1,14 @@
+{
+  "name": "postgresqlconnect",
+  "version": "1.0.0",
+  "description": "Connect backend with postgresql",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ankit Anjana",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
