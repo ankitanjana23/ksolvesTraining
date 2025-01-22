@@ -1,9 +1,9 @@
 How to Install sql for linux :- ref digital Ocean
 
 Installation command 
-sudo apt update
-sudo apt install mysql-server
-sudo mysql_secure_installation
+sudo apt update , 
+sudo apt install mysql-server ,
+sudo mysql_secure_installation 
 
 //to access and use mysql inside terminal 
 sudo -u root -p   //here u - username root , p - password , d - database , h- host
