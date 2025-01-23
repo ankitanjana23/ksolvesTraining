@@ -15,7 +15,7 @@ connection.connect((err) => {
     else console.log('database connection error ',err);
 })
 
-app.use(express.json())
+app.use(express.json()) 
 
 //connect backend with sql 
 //install npm i mysql
@@ -24,7 +24,9 @@ app.get('/' , (req,res)=>{
     res.send({'res' : 'backend connect successfully'})
 })
 
-app.get('/api' , (req,res)=>{
+//You have two either go with any method 
+
+app.get('/api' ,(req,res)=>{
     connection.query('SELECT * FROM Marks' , (err,result) => {
           if (err) {
             console.log(err);
@@ -33,6 +35,15 @@ app.get('/api' , (req,res)=>{
           }
           res.json(result);
     })
+
+    //  try{
+    //     const result = await connection.query('SELECT * FROM Marks');
+    //     res.json(result);
+
+    //  }catch(err){
+    //      console.log(err);
+    //      res.status(500).json({error: 'Database query error' , details: err.message})
+    //  }
 })
 
 app.listen(PORT, () => {
