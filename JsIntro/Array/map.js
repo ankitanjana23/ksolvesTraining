@@ -13,7 +13,7 @@ console.log("Print Map" , mpp);
 
 let text = ""; //empty
 for(let [key,value] of mpp){
-    text += key + " " + value + " , ";
+    text += key + " " + value + " , " ;
 }
 console.log(text);
 
