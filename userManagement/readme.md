@@ -8,3 +8,7 @@ CREATE TABLE products (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(255) NOT N
 
 INSERT INTO products (name, description, price, stock)
 VALUES ('Laptop', 'High-performance laptop for gaming and work', 1299.99, 10);
+
+//Alter table and add foregin key
+ALTER TABLE products ADD user_id INT NOT NULL;
+ALTER TABLE products ADD FOREIGN KEY (user_id) REFERENCES users(id);

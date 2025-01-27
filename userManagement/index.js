@@ -33,6 +33,23 @@ const checkUserExist = (req,res,next)=>{
     })
 }
 
+const checkProductExist = (req,res,next) =>{
+    let sql = 'select * from products where id = ?'
+    let userId = req.params.id;
+    
+    db.query(sql,[userId] , (err,result)=>{
+         if(err){
+            console.error(err);
+            return res.status(500).send('database not connected with server')
+         }
+         if(result.length === 0){
+            return res.status(400).send(`product not present with id : ${userId}`)
+         }
+         req.products = result[0]; //store result 
+         next()
+    })
+}
+
 app.get('/users', (req, res) => {
     let sql = 'SELECT * FROM users';
     db.query(sql, (err, result) => {
@@ -131,6 +148,117 @@ app.patch('/users/:id',checkUserExist, (req, res) => {
                 return res.status(500).send('data not fetch from server')
             }
             return res.status(200).send(`data successfully updated with id : ${userId}`)
+        })
+    })
+
+    app.get('/users/products/:id', checkUserExist, async(req,res)=>{
+        let userId = req.params.id;
+        let sql = 'select u.id as user_id ,u.name as user_name, p.name as product_name , p.price as product_price from users as u Left join products as p on p.user_id = u.id where user_id = ?';
+        try{
+            await db.query(sql,[userId] ,(err,result)=>{
+                res.json(result);
+            })
+        }catch(err){
+            console.error(err);
+            return res.status(500).send('data not fetch from server');
+        }
+    })
+
+    app.get('/products' , (req,res)=>{
+        //display all products
+        let sql = 'select * from products';
+        db.query(sql,(err,result)=>{
+            if(err){
+                console.error(err);
+                return res.status(500).send('servere not connected ...')
+            }
+            res.json(result);
+        })
+    })
+    
+    app.get('/products/:id' ,checkProductExist, (req,res)=>{
+            res.json(req.products);
+    })
+    
+    app.post('/products' , (req,res)=>{
+           let sql = 'INSERT INTO products (name , description , price , stock,user_id) values(?,?,?,?,?)'
+           let {name, description, price, stock,user_id} = req.body;
+           let value = [name , description ||null , price , stock,user_id];
+           db.query(sql,value , (err,result)=>{
+               if(err){
+                console.error(err);
+                return res.status(500).send('data not fetch from server')
+               }
+               return res.status(201).send(`product successfully created `)
+           })
+    })
+    
+    app.put('/products/:id' , checkProductExist, (req,res)=>{
+        /*
+        //just see partial updation and full updation 
+        let userId = req.params.id ;
+        let {name} = req.body; 
+        if(!name) return res.status(500).send(`provide name for id ${userId}`)
+        
+        let sql = 'update products set name = ? where id = ? '
+    
+        productDb.query(sql,[name , userId] , (err,result)=>{
+            if(err){
+                console.error(err);
+                return res.status(500).send('product not fetch from server')
+            }
+            return res.status(201).send(`use put request and successfully update product with id ${userId}`)
+        })
+        */
+        //  console.log(req.products); //data
+         let userId = req.params.id;
+         let {name , description , price , stock} = req.body;
+         //all filed required 
+         if(!name || !description || !price || !stock ){
+            return res.status(400).send(`please provide all required field like name , description , price , stock with id : ${userId}`)
+         }
+         let sql = 'update products set name = ? , description = ? , price = ? , stock = ? where id = ? ';
+         db.query(sql,[name,description,price,stock, userId] ,(err,result)=>{
+             if(err){
+                console.error(err);
+                return res.status(500).send('product not fetch from Server')
+             }
+             return res.status(201).send(`product updated successfully with id : ${userId}`)
+         })
+    })
+    
+    app.patch('/products/:id',checkProductExist,(req,res)=>{
+        let userId = req.params.id ;
+        let {name ,description,price,stock,user_id} = req.body;
+        //any one field required 
+        if(!name && !description && !price && !stock && !user_id){
+            return res.status(500).send(`please provide any one field like name , description , price , stock with id with ${userId}`)
+        }
+        let products = req.products ; //fetch data 
+        let updatedName = name || products.name ;
+        let updatedDescription = description || products.description;
+        let updatedPrice = price || products.price;
+        let updatedStock = stock || products.stock;
+        let updatedUser_id = user_id || products.user_id;
+        let sql = 'update products set name = ? , description = ? , price = ? , stock = ? ,user_id = ? where id = ?';
+        db.query(sql,[updatedName,updatedDescription, updatedPrice , updatedStock, updatedUser_id,userId], (err,result)=>{
+             if(err){
+                console.error(err);
+                return res.status(500).send('product not fetch form databases')
+             }
+             return res.status(201).send(`products patched successfully with id : ${userId}`)
+        })
+    })
+    
+    app.delete('/products/:id' ,checkProductExist, (req,res)=>{
+        let sql = 'delete from products where id = ?'
+        let userId = [req.params.id]
+        db.query(sql,userId,(err,result)=>{
+            if(err){
+                console.error(err);
+                return res.status(500).send('product not fetch from database')
+            }
+            return res.status(201).send(`product deleted successfully with id : ${userId}`)
         })
     })
 
