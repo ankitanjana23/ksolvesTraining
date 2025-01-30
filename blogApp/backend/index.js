@@ -3,12 +3,19 @@ const {Pool} = require('pg')
 const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const cors = require('cors');
+
 
 const app = express();
 require('dotenv').config()
 
 const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow requests only from your frontend
+    credentials: true // Allow cookies or authentication headers
+}));
 
 const db = new Pool({
     host: process.env.DB_HOST,
@@ -57,24 +64,26 @@ app.post('/users/signup' ,checkUserExist, async(req,res)=>{
 
 //Login Route 
 
-app.post('/users/login' , async(req,res)=>{
+app.post('/users/login' , async (req,res)=>{
 
     const {email,password} = req.body;
-    //check this data present inside our database our not 
-
-    let q = 'SELECT * FROM users where email = $1';
-
-    try{
-       const result = await db.query(q,[email]);
+     try{
+    //    console.log(hii);
+    console.log("Login request received for:", email);
+       const result = await db.query('SELECT * FROM users WHERE email = $1',[email]);
+       console.log(result.rows[0]);
        if(result.rows.length ==0){
         return res.status(400).json({ message: 'User not found' });
        }
        const user = result.rows[0];
        //compare password 
        const validPassword = await bcrypt.compare(password, user.password);
+
+        
        if(!validPassword){
         return res.status(400).json({ message: 'Invalid credentials' });
        }
+       console.log("hi")
        const token = jwt.sign({ id: user.id, isadmin: user.isadmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
        res.json({ token });
     }
@@ -117,6 +126,15 @@ app.get('/admin', authenticateToken, (req, res) => {
     }
     res.json({ message: 'Welcome Admin' });
 });
+
+app.get("/admin/users", async (req, res) => {
+    try {
+      const users = await pool.query("SELECT id, name, email FROM users");
+      res.json(users.rows);
+    } catch (err) {
+      res.status(500).json({ message: "Error fetching users" });
+    }
+  });
 
 app.use((req,res)=>{
     res.status(404).json({ error: 'Route not found' });
