@@ -6,6 +6,7 @@ import Admin from './pages/Admin';
 import CreateBlog from './pages/CreateBlog';
 import { isAdmin } from './utils/auth';
 import ProtectedRoute from './components/ProtectedRoute'
+import BlogComment from './pages/BlogComment';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         {/* <Route path="/admin" element={<Admin />} /> */}
         <Route element={<ProtectedRoute />}>
           <Route path="/create-blog" element={<CreateBlog />} />
+          <Route path="/blogs/:blogId" element={<BlogComment />} />
           {isAdmin() && <Route path="/admin" element={<Admin />} />}
         </Route>
 

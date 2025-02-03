@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../utils/util";
 import { getToken, removeToken } from "../utils/auth";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import { nanoid } from "nanoid";
+import { useNavigate ,Link } from "react-router-dom"; // Import useNavigate for navigation
+// import { nanoid  } from "nanoid";  //use blog.id instend of nanoid
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -35,6 +35,10 @@ const Blog = () => {
     navigate("/create-blog"); 
   };
 
+  const handleComments = (blogId) => {
+    navigate(`/blogs/${blogId}`);
+  }
+
   return (
     <div className="min-h-screen p-6">
       <header className="flex justify-between mb-6">
@@ -56,7 +60,7 @@ const Blog = () => {
       {error && <p className="text-red-500">{error}</p>}
       <div className="space-y-4">
         {blogs.map((blog) => (
-          <div key={blog.id || nanoid()} className="p-4 border rounded-lg bg-white shadow">
+          <div key={blog.id} className="p-4 border rounded-lg bg-white shadow" onClick={() =>handleComments(blog.id)} >
             <h3 className="text-xl font-semibold">{blog.title}</h3>
             <p className="text-gray-600">{blog.content}</p>
           </div>
