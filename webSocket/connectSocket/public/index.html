@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.io Chat</title>
+</head>
+<body>
+    <div>Express file connected - Socket.io Chat App</div>
+    
+    <input type="text" placeholder="Write a message..." id="message" />
+    <button id="btn">Send</button>
+
+    <div id="messages"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Establish socket connection
+        const socket = io();
+
+        // Select DOM elements
+        const btn = document.getElementById('btn');
+        const message = document.getElementById('message');
+        const allMessages = document.getElementById('messages');
+
+        // Listen for incoming messages
+        socket.on('message', (msg) => {
+            const p = document.createElement('p');
+            p.innerText = msg;
+            allMessages.appendChild(p);
+        });
+
+        // Send message on button click
+        btn.addEventListener('click', () => {
+            const msg = message.value.trim();
+            if (msg) {
+                socket.emit('user-message', msg);
+                message.value = ""; // Clear input after sending
+            }
+        });
+    </script>
+</body>
+</html>
