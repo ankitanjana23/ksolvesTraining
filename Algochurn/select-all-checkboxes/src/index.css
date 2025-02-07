@@ -1,0 +1,116 @@
+:root {
+  font-family: "Poppins", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #ffffff;
+  background-color: #181a1b; /* Dark charcoal for a clean, modern look */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1); /* Glassmorphism effect */
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h2 {
+  color: #f8f8f8;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.select-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.cities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.city-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.15); /* Slightly transparent for a glass effect */
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  transition: 0.3s ease-in-out;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.city-item:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #ffcc00; /* Bright golden color for contrast */
+  transform: scale(1);
+  transition: transform 0.2s ease-in-out;
+}
+
+input[type="checkbox"]:hover {
+  transform: scale(1.1);
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: #f5f5f5; /* Soft pastel gray */
+  }
+
+  .container {
+    background: #ffffff;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  h2,
+  .select-all {
+    color: #212121;
+  }
+
+  .city-item {
+    background: #f0f0f5; /* Softer shade */
+    color: #212121;
+  }
+
+  .city-item:hover {
+    background: #e0e0eb;
+  }
+}
