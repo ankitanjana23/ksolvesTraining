@@ -6,7 +6,7 @@ const Sidebar = () => {
   return (
     <>
       <CssBaseline />
-      <Drawer variant="permanent" sx={{ width: 240, flexShrink: 0 }}>
+      <Drawer variant="permanent" sx={{ width: 100, flexShrink: 0 }}>
         <Toolbar />
         <List>
           <ListItem button component={Link} to="/">

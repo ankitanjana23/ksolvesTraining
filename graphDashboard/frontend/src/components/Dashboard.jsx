@@ -30,7 +30,6 @@ const Dashboard = () => {
             close: parseFloat(timeSeries[date]["4. close"]),
             volume: parseInt(timeSeries[date]["5. volume"], 10),
           }));
-          console.log(transformedData)
           setGraphData(transformedData.reverse()); // Ensure chronological order
           setMetaData(meta);
         }
@@ -45,7 +44,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Container sx={{ padding: "40px", textAlign: "center" }}>
+    <Container sx={{padding :"40px" , textAlign: "center" }}>
       <Typography variant="h4" sx={{ my: 3 }}>
         Stock Market Dashboard 📊
       </Typography>

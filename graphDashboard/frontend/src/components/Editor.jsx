@@ -17,9 +17,9 @@ const toolbarOptions = [
 
 const Editor = () => {
   const [content, setContent] = useState("");
-
+  // ml: "100px", maxWidth: "calc(100% - 100px)",
   return (
-    <Container sx={{ ml: "100px", maxWidth: "calc(100% - 100px)", mt: 10 }}>
+    <Container sx={{ mt: 10 , textAlign: "center" }}>
       {/* Title */}
       <Typography variant="h4" sx={{ textAlign: "center", mb: 3 }}>
         Rich Text Editor ✏️

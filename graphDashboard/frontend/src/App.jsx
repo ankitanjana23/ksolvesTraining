@@ -1,27 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import Editor from "./components/Editor";
+import Header from "./components/Header";
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <Router>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Stock Market Dashboard
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      <Sidebar />
-
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/editor" element={<Editor />} />
-      </Routes>
+      <Box sx={{ display: "flex" }}>
+        <Header toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        {sidebarOpen && <Sidebar />}
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/editor" element={<Editor />} />
+          </Routes>
+        </Box>
+      </Box>
     </Router>
   );
 }
