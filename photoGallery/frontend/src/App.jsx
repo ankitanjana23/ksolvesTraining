@@ -1,11 +1,9 @@
-import React from 'react'
+import UploadPage from "./pages/UploadPage";
 
 function App() {
   return (
-    <div>
-      Hellow Everyone 
-    </div>
-  )
+    <UploadPage/>
+  );
 }
 
-export default App
+export default App;
