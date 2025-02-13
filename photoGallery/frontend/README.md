@@ -9,3 +9,5 @@ Currently, two official plugins are available:
 
 
 //pagination page start 1 and pageSize 6 fixed 
+
+// sorting completed , now image view full screen (light view effect)

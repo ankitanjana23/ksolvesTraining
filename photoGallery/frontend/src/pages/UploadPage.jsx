@@ -1,25 +1,34 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const API_URL = "http://localhost:3000/api";
+const pageSize = 6;
 
 function UploadPage() {
   const [file, setFile] = useState(null);
-  const [page,setPage] = useState(1);
-  const [images, setImages] = useState([]);
-
-  useEffect(() => {
-    fetchImages();
-  }, [page]);
+  const [page, setPage] = useState(1);
+  const [sort, setSort] = useState("desc");
+  const [search, setSearch] = useState(""); //empty so first search all image
+  const [images, setImages] = useState([]); // image id , filename
 
   const fetchImages = async () => {
     try {
-      const res = await axios.get(`${API_URL}/images?pageName=${page}&pageSize=6`);
+      const res = await axios.get(
+        `${API_URL}/images?pageName=${page}&pageSize=${pageSize} &sort=${sort}`
+      );
       setImages(res.data);
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    fetchImages();
+  }, [page, pageSize, sort, search ]);
+
+  
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -46,6 +55,12 @@ function UploadPage() {
     }
   };
 
+  //use filter to get image if text exist
+
+  const filteredImages = images.filter((img) =>
+    img.filename.toLocaleLowerCase().includes(search)
+  );
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
       <h1 className="text-3xl font-bold mb-4">Image Upload & Gallery</h1>
@@ -68,18 +83,38 @@ function UploadPage() {
         </button>
       </form>
 
+      <select
+        className="mt-4 p-2 border rounded-md"
+        value={sort}
+        onChange={(e) => setSort(e.target.value)}
+      >
+        <option value="desc">Newest First</option>
+        <option value="asc">Oldest First</option>
+      </select>
+
+      <div>
+        <input
+          type="text"
+          className="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white"
+          placeholder="search image..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value.toLocaleLowerCase())}
+        />
+      </div>
+
       {/* Image Gallery */}
       <h2 className="text-2xl font-semibold mt-6">Uploaded Images</h2>
       <div className="grid grid-cols-3 gap-4 mt-4">
-        {images.map((img) => (
+        {filteredImages.map((img) => (
           <div
             key={img.id}
             className="border p-4 rounded-lg shadow-md bg-white"
           >
-            <img
+            <LazyLoadImage
               src={`${API_URL}/image/${img.id}`}
+              effect="blur"
               alt={img.filename}
-              className="w-40 h-40 object-cover mx-auto"
+              className="w-60 h-40 object-cover mx-auto"
             />
             <p className="text-center mt-2">{img.filename}</p>
             <button
@@ -96,13 +131,16 @@ function UploadPage() {
         <button
           onClick={() => setPage(page - 1)}
           disabled={page === 1}
-          className={`px-4 py-2 rounded-md ${page === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
+          className={`px-4 py-2 rounded-md ${
+            page === 1
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 text-white"
+          }`}
         >
           Previous
         </button>
         <button
           onClick={() => setPage(page + 1)}
-          // disabled={page * 6 >= total}  infinite
           className={`px-4 py-2 rounded-md  "bg-blue-500 text-white"}`}
         >
           Next

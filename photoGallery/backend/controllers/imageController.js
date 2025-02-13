@@ -3,20 +3,18 @@ const pool = require("../config/db");
 // Get all images
 const getAllImages = async (req, res) => {
   try {
-    let { pageName, pageSize } = req.query;
-
-    pageName = parseInt(pageName) || 1;
-    pageSize = parseInt(pageSize) || 6; //6 records by default 
-    const images = await pool.query(
-      "SELECT id, filename FROM images ORDER BY id LIMIT $2 OFFSET (($1-1)*$2) ",
-      [pageName, pageSize]
+    let { pageName = 1, pageSize = 6 , sort = "desc"} = req.query;
+       pageName = (pageName-1)*pageSize;
+       const images = await pool.query(
+      `SELECT id, filename FROM images ORDER BY id ${sort} LIMIT $2 OFFSET $1`,
+      [pageName,pageSize]
     );
     res.status(200).json(images.rows);
   } catch (err) {
     console.error(err);
     res.status(500).send("Error pagination ");
   }
-};
+};   
 
 // Upload Image
 const uploadImage = async (req, res) => {
