@@ -19,13 +19,12 @@ const getAllImages = async (req, res) => {
 // Upload Image
 const uploadImage = async (req, res) => {
   try {
+    //fieldname , originalname , encoding 7bit , mimetype , buffer
     const { originalname, mimetype, buffer } = req.file;
-
     const result = await pool.query(
       "INSERT INTO images (filename, type, data) VALUES ($1, $2, $3) RETURNING *",
       [originalname, mimetype, buffer]
     );
-
     res
       .status(201)
       .json({ message: "Image uploaded successfully", image: result.rows[0] });
@@ -57,9 +56,9 @@ const getImage = async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).send("Image not found");
     }
-
+    
     const image = result.rows[0];
-    res.set("Content-Type", image.type);
+    res.set("Content-Type", image.type);  
     res.send(image.data);
   } catch (err) {
     console.error(err);

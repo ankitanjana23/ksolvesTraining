@@ -4,7 +4,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const API_URL = "http://localhost:3000/api";
-const pageSize = 6;
+const pageSize = 12;
 
 function UploadPage() {
   const [file, setFile] = useState(null);
@@ -36,7 +36,7 @@ function UploadPage() {
 
     const formData = new FormData(); //send data (files) in a multipart/form-data format.
     formData.append("image", file);
-
+  
     try {
       await axios.post(`${API_URL}/upload`, formData);
       setFile(null);
