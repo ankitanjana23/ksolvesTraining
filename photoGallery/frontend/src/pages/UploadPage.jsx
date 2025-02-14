@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const API_URL = "http://localhost:3000/api";
-const pageSize = 12;
+const pageSize = 6;
 
 function UploadPage() {
   const [file, setFile] = useState(null);
@@ -16,7 +16,7 @@ function UploadPage() {
   const fetchImages = async () => {
     try {
       const res = await axios.get(
-        `${API_URL}/images?pageName=${page}&pageSize=${pageSize} &sort=${sort}`
+        `${API_URL}/images?pageName=${page}&pageSize=${pageSize}&sort=${sort}`
       );
       setImages(res.data);
     } catch (err) {
@@ -26,9 +26,7 @@ function UploadPage() {
 
   useEffect(() => {
     fetchImages();
-  }, [page, pageSize, sort, search ]);
-
-  
+  }, [page, pageSize, sort, search]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -36,7 +34,7 @@ function UploadPage() {
 
     const formData = new FormData(); //send data (files) in a multipart/form-data format.
     formData.append("image", file);
-  
+
     try {
       await axios.post(`${API_URL}/upload`, formData);
       setFile(null);
@@ -150,4 +148,4 @@ function UploadPage() {
   );
 }
 
-export default UploadPage;
+export default UploadPage; 
