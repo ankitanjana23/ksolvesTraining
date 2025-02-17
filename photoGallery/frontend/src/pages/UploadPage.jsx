@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import FullScreenImage from "./FullScreenImage";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const pageSize = 6;
+const PAGE_SIZE = 6;
 
 function UploadPage() {
   const [file, setFile] = useState(null);
@@ -12,12 +13,13 @@ function UploadPage() {
   const [sort, setSort] = useState("desc");
   const [search, setSearch] = useState(""); //empty so first search all image
   const [images, setImages] = useState([]); // image id , filename
+  const [fullScreenUrl, setFullScreenUrl] = useState(null);
 
   const fetchImages = async () => {
     try {
-      const res = await axios.get(
-        `${API_URL}/images?pageName=${page}&pageSize=${pageSize}&sort=${sort}`
-      );
+      const res = await axios.get(`${API_URL}/images`, {
+        params: { pageName: page, pageSize: PAGE_SIZE, sort },
+      });
       setImages(res.data);
     } catch (err) {
       console.error(err);
@@ -46,7 +48,7 @@ function UploadPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/image/${id}`);
+      await axios.delete(`${API_URL}/image/:${id}`);
       fetchImages(); // Refresh images after delete
     } catch (err) {
       console.error(err);
@@ -64,6 +66,7 @@ function UploadPage() {
       <h1 className="text-3xl font-bold mb-4">Image Upload & Gallery</h1>
 
       {/* Upload Form */}
+
       <form
         onSubmit={handleUpload}
         className="bg-white p-4 rounded-lg shadow-md w-80"
@@ -93,7 +96,7 @@ function UploadPage() {
       <div>
         <input
           type="text"
-          className="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mt-2 p-2 border rounded-md w-80"
           placeholder="search image..."
           value={search}
           onChange={(e) => setSearch(e.target.value.toLocaleLowerCase())}
@@ -113,6 +116,7 @@ function UploadPage() {
               effect="blur"
               alt={img.filename}
               className="w-60 h-40 object-cover mx-auto"
+              onClick={() => setFullScreenUrl(`${API_URL}/image/${img.id}`)} //update
             />
             <p className="text-center mt-2">{img.filename}</p>
             <button
@@ -124,6 +128,14 @@ function UploadPage() {
           </div>
         ))}
       </div>
+      {/* full screen mode  */}
+      {fullScreenUrl && (
+        <FullScreenImage
+          url={fullScreenUrl}
+          onClose={() => setFullScreenUrl(null)}
+        />
+      )}
+
       {/* pagination  */}
       <div className="mt-6 flex space-x-4">
         <button

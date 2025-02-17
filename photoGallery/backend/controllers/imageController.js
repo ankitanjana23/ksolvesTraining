@@ -34,6 +34,7 @@ const uploadImage = async (req, res, next) => {
 // Delete Image
 const deleteImage = async (req, res, next) => {
   try {
+    console.log(req.params);
     const { id } = req.params;
     const result = await imageService.deleteImage(id);
     res.status(200).json({ message: "Image deleted successfully" });
