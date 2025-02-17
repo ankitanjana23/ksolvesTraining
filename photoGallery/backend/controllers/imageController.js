@@ -1,7 +1,7 @@
 const imageService = require("../services/imageService");
 
 // Get all images
-const getAllImages = async (req, res) => {
+const getAllImages = async (req, res, next) => {
   try {
     let { pageName, pageSize, sort } = req.data; //get data from pageValidation
     const images = await imageService.getAllImages(pageName, pageSize, sort);
@@ -14,7 +14,7 @@ const getAllImages = async (req, res) => {
 };
 
 // Upload Image
-const uploadImage = async (req, res) => {
+const uploadImage = async (req, res, next) => {
   try {
     //fieldname , originalname , encoding 7bit , mimetype , buffer
     const { originalname, mimetype, buffer } = req.file;
@@ -32,7 +32,7 @@ const uploadImage = async (req, res) => {
 };
 
 // Delete Image
-const deleteImage = async (req, res) => {
+const deleteImage = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await imageService.deleteImage(id);
@@ -43,7 +43,7 @@ const deleteImage = async (req, res) => {
 };
 
 // Get single image
-const getImage = async (req, res) => {
+const getImage = async (req, res, next) => {
   try {
     const image = req.image; //get data from middleware
     res.set("Content-Type", image.type);
@@ -52,9 +52,5 @@ const getImage = async (req, res) => {
     next(err);
   }
 };
-
-//pagination user provide pageName , pageSize - contiane records
-
-const pagination = async (req, res) => {};
 
 module.exports = { getAllImages, uploadImage, deleteImage, getImage };

@@ -7,3 +7,5 @@ CREATE TABLE images (
     data BYTEA NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+checked error at last
