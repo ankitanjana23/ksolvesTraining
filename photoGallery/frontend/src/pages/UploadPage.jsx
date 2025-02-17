@@ -3,7 +3,7 @@ import axios from "axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = import.meta.env.VITE_API_URL;
 const pageSize = 6;
 
 function UploadPage() {
@@ -26,7 +26,7 @@ function UploadPage() {
 
   useEffect(() => {
     fetchImages();
-  }, [page, pageSize, sort, search]);
+  }, [page, sort]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -148,4 +148,4 @@ function UploadPage() {
   );
 }
 
-export default UploadPage; 
+export default UploadPage;
