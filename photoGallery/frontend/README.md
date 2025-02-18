@@ -11,3 +11,13 @@ Currently, two official plugins are available:
 //pagination page start 1 and pageSize 6 fixed 
 
 // sorting completed , now image view full screen (light view effect)
+
+run backend & frontend with 1 command concurrently run all script file
+
+"start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    
+"backend":"cd backend && node index.js",
+    
+"frontend": "cd frontend && npm run dev"   
+
+
