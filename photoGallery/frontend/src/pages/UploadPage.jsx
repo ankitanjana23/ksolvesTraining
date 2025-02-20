@@ -48,7 +48,7 @@ function UploadPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/image/:${id}`);
+      await axios.delete(`${API_URL}/image/${id}`);
       fetchImages(); // Refresh images after delete
     } catch (err) {
       console.error(err);

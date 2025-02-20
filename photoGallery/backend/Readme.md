@@ -9,3 +9,13 @@ CREATE TABLE images (
 );
 
 checked error at last
+
+Docker command to build 
+
+sudo docker build -t backend .   // backend current directory where your Dockerfile exist 
+
+. for current directory 
+
+create docker postgres image 
+
+docker-compose exec postgresdb psql -U postgres -d photogallery

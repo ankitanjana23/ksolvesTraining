@@ -6,7 +6,9 @@ const errorHandler = require("./middlewares/errorHandler");
 const imageRoutes = require("./routes/imageRoutes");
 const pool = require("./config/db");
 
-const PORT = process.env.PORT || 3001;
+
+const PORT = process.env.PORT|| 3000;
+console.log(PORT);
 
 app.use(cors());
 app.use(express.json());

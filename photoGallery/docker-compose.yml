@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  postgresdb:
+    image: postgres:15 # Use a specific version for stability
+    restart: unless-stopped
+    # env_file: ./.env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "Ankit@#4565"
+      POSTGRES_DB: photogallery
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    depends_on:
+      - postgresdb
+
+    build: ./backend
+    ports:
+      - "3001:3000"
+
+    # env_file: ./.env
+    restart: unless-stopped
+
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: "Ankit@#4565"
+      DB_HOST: postgresdb # Match the service name
+      DB_PORT: 5433
+      DB_DATABASE: photogallery
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      VITE_API_URL : http://localhost:3001/api
+    ports:
+      - "5173:8080"
+
+volumes:
+  pg_data:
