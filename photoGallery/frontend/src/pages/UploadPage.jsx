@@ -33,7 +33,7 @@ function UploadPage() {
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!file) return;
-
+    
     const formData = new FormData(); //send data (files) in a multipart/form-data format.
     formData.append("image", file);
 
@@ -71,6 +71,7 @@ function UploadPage() {
         onSubmit={handleUpload}
         className="bg-white p-4 rounded-lg shadow-md w-80"
       >
+        <label htmlFor="file-uploader">Upload file:</label>
         <input
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
@@ -79,6 +80,7 @@ function UploadPage() {
         <button
           type="submit"
           className="w-full bg-blue-500 text-white mt-2 py-2 rounded-md"
+          disabled = {file? false:true}
         >
           Upload
         </button>
