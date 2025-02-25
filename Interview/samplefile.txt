@@ -30,3 +30,5 @@ how to update , delete , select , Insert into query
 what is event driven architechure 
 
 find out secound highest salary 
+
+create reprot what you learn , networking part in node js , graph QL 
