@@ -5,9 +5,9 @@ require("dotenv").config();
 const errorHandler = require("./middlewares/errorHandler");
 const imageRoutes = require("./routes/imageRoutes");
 const pool = require("./config/db");
+const logger = require("./logger");
 
-
-const PORT = process.env.PORT|| 3000;
+const PORT = process.env.PORT || 3000;
 console.log(PORT);
 
 app.use(cors());
@@ -16,11 +16,13 @@ app.use("/api", imageRoutes);
 
 pool
   .connect()
-  .then(() => console.log("Connected to PostgreSQL database"))
-  .catch(() => console.log("database connection error "));
+  .then(() => logger.info("Connected to PostgreSQL database"))
+  .catch(() => logger.error("database connection error "));
 
 app.use(errorHandler);
 
+//if application goes different port gives error
+
 app.listen(PORT, () => {
-  console.log(`Simple port listen on : 3000`);
+  console.log(`Simple port listen on : ${PORT}`);
 });
