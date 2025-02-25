@@ -1,0 +1,32 @@
+DAY :- React Hooks , useContext - performance , useReducer , useEffect - mounting , unmounting 
+useRef , useMemo , useCallback - optimazation performance 
+
+Objects are the building blocks of your code, and they allow you to encapsulate data and functionality into organized units.
+
+Node.js has revolutionized the way we build server-side applications, allowing JavaScript to run outside the browser.
+https://medium.com/@hiadeveloper/master-node-js-in-2024-from-beginner-to-pro-with-real-world-examples-9d989871ae84
+https://medium.com/javarevisited/3-ways-to-learn-node-js-in-depth-in-2024-7b5874fae74b
+
+why we use node ? think
+
+
+
+what is node js 
+what is server side scripting 
+why we use cors in js 
+what is headers in node js 
+why we use node module have you learn node module 
+what is the difference b/w req params req body 
+creating application are u using mvc struhure for better practices 
+
+what is http method - are familer with put , patch can you tell me actual difference 
+what is diff b/w import and require modules 
+what is middleware ? ar
+
+
+joins , how to update 
+how to update , delete , select , Insert into query 
+
+what is event driven architechure 
+
+find out secound highest salary 
